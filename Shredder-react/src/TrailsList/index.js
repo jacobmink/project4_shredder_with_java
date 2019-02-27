@@ -2,15 +2,16 @@ import React from 'react';
 import SnowReport from '../SnowReport';
 import { withRouter } from 'react-router-dom'
 // import { Document } from 'react-pdf';
-import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap'
+import { Container, Col, Row, ListGroup, ListGroupItem, Button } from 'reactstrap'
 const TrailList = (props) => {
     const allTrails = props.trails.map((trail) => {
         return (
             <ListGroup className='trail-block'>
-                <ListGroupItem key={trail._id}>
+                <ListGroupItem key={trail.id}>
                     <strong>Name:</strong> {trail.name}<br />
                     <strong>Resort:</strong> {trail.resort}<br />
                     <strong>Difficulty:</strong> {trail.difficulty}<br />
+                    <Button onClick={props.addTrailToFavorites.bind(null, trail.id)}>Add to Favorites</Button>
                 </ListGroupItem>
             </ListGroup>
         )

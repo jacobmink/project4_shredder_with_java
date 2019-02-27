@@ -1,5 +1,6 @@
 package shredder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -27,8 +28,8 @@ public class User {
     )
     private Set<Trail> favoriteTrails;
 
-    public void setFavoriteTrails(Set<Trail> favoriteTrails) {
-        this.favoriteTrails = favoriteTrails;
+    public void setFavoriteTrails(Trail favoriteTrails) {
+        this.favoriteTrails.add(favoriteTrails);
     }
 
     public Set<Trail> getFavoriteTrails() {

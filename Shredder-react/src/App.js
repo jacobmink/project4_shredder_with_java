@@ -89,14 +89,17 @@ class App extends Component {
           'Content-Type': 'application/json'
         }
       });
+      console.log(loginResponse);
+      const parsedLogin = await loginResponse.json();
+      console.log(parsedLogin);
       if (!loginResponse.ok) {
         this.setState({
           message: 'Incorrect Username or Password'
         });
         throw Error(loginResponse.statusText)
       }
-      const parsedLogin = await loginResponse.json();
-      console.log(parsedLogin);
+      // const parsedLogin = await loginResponse.json();
+      // console.log(parsedLogin);
       if (parsedLogin) {
         console.log(parsedLogin, " parsed login");
         this.setState({
@@ -128,7 +131,7 @@ class App extends Component {
         <Header />
         <Switch>
           <Route exact path='/' render={(props) => <Login state={this.state} showUserModal={this.showUserModal} showEditModal={this.showEditModal} handleChange={this.handleChange} handleUserUpdate={this.handleUserUpdate} deleteUser={this.deleteUser} handleLogin={this.handleLogin} />} />
-          <Route exact path='/trails' render={(props) => <TrailContainer username={this.state.username} favoriteTrails={this.state.favoriteTrails} /> } />
+          <Route exact path='/trails' render={(props) => <TrailContainer username={this.state.username} favoriteTrails={this.state.favoriteTrails} state={this.state} /> } />
         </Switch>
         
       </div>
@@ -136,6 +139,5 @@ class App extends Component {
   }
 }
 
-// poop
 
 export default withRouter(App);

@@ -5,10 +5,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
 public class UserController {
+
+    @Autowired
+    private TrailRepository trailRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -25,14 +30,53 @@ public class UserController {
         return userList;
     }
 
+//    @PostMapping("/user/login")
+//    public HashMap login(@RequestBody User user, HttpSession session) throws Exception{
+//        bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//        User userLoggingIn = userRepository.findByUsername(user.getUsername());
+//        boolean validLogin = bCryptPasswordEncoder.matches(user.getPassword(), userLoggingIn.getPassword());
+//        if(validLogin){
+//            session.setAttribute("username", userLoggingIn.getUsername());
+//            Iterable<Trail> favoriteTrails = trailRepository.findByUserId(userLoggingIn.getId());
+//            HashMap<String, Object> result = new HashMap<String, Object>();
+//            result.put("user", userLoggingIn);
+//            result.put("trails", favoriteTrails);
+//            return result;
+//        }else{
+//            throw new Exception("invalid credentials");
+//        }
+//
+//    }
+
+//    @PostMapping("/user/login")
+//    public User login(@RequestBody User user, HttpSession session) throws Exception{
+//        bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//        User userLoggingIn = userRepository.findByUsername(user.getUsername());
+//        boolean validLogin = bCryptPasswordEncoder.matches(user.getPassword(), userLoggingIn.getPassword());
+//        if(validLogin){
+//            session.setAttribute("username", userLoggingIn.getUsername());
+//            return userLoggingIn;
+//        }else{
+//            throw new Exception("invalid credentials");
+//        }
+//
+//    }
+
     @PostMapping("/user/login")
-    public User login(@RequestBody User user, HttpSession session) throws Exception{
+    public HashMap login(@RequestBody User user, HttpSession session) throws Exception{
         bCryptPasswordEncoder = new BCryptPasswordEncoder();
         User userLoggingIn = userRepository.findByUsername(user.getUsername());
         boolean validLogin = bCryptPasswordEncoder.matches(user.getPassword(), userLoggingIn.getPassword());
         if(validLogin){
             session.setAttribute("username", userLoggingIn.getUsername());
-            return userLoggingIn;
+            ArrayList<Object> trails = new ArrayList<Object>();
+            for(Object trail : userLoggingIn.getFavoriteTrails()){
+                trails.add(trail);
+            }
+            HashMap<String, Object> result = new HashMap<String, Object>();
+            result.put("user", userLoggingIn);
+            result.put("trails", trails);
+            return result;
         }else{
             throw new Exception("invalid credentials");
         }
@@ -87,6 +131,19 @@ public class UserController {
             }
     }
 
+    @PostMapping("/user/trail/{trail_id}")
+    public String addTrailToFavorites(@PathVariable Long trail_id, HttpSession session) throws Exception{
+        try{
+            User foundUser = userService.findUserByUsername(session.getAttribute("username").toString());
+            Optional<Trail> foundTrail = trailRepository.findById(trail_id);
+            foundUser.setFavoriteTrails(foundTrail.get());
+            userRepository.save(foundUser);
+            return "Favorite trails updated";
+        }catch(Exception err){
+            throw new Exception(err.getMessage());
+        }
+    }
+
 
     @DeleteMapping("/user/{id}")
     public String deleteUser(@PathVariable Long id) throws Exception{
@@ -96,7 +153,5 @@ public class UserController {
         }catch(Exception err){
             throw new Exception(err.getMessage());
         }
-
-
     }
 }

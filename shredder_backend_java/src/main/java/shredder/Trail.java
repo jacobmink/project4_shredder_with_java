@@ -16,7 +16,15 @@ public class Trail {
     private String difficulty;
 
     @ManyToMany(mappedBy = "favoriteTrails")
-    Set<User> users;
+    private Set<User> users;
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
     public Long getId() {
         return id;
