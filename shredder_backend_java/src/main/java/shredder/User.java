@@ -26,6 +26,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "trail_id")
     )
+    @JsonIgnore
     private Set<Trail> favoriteTrails;
 
     public void setFavoriteTrails(Trail favoriteTrails) {

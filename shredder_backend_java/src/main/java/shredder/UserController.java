@@ -69,13 +69,13 @@ public class UserController {
         boolean validLogin = bCryptPasswordEncoder.matches(user.getPassword(), userLoggingIn.getPassword());
         if(validLogin){
             session.setAttribute("username", userLoggingIn.getUsername());
-            ArrayList<Object> trails = new ArrayList<Object>();
+            ArrayList<Object> favoriteTrails = new ArrayList<Object>();
             for(Object trail : userLoggingIn.getFavoriteTrails()){
-                trails.add(trail);
+                favoriteTrails.add(trail);
             }
             HashMap<String, Object> result = new HashMap<String, Object>();
             result.put("user", userLoggingIn);
-            result.put("trails", trails);
+            result.put("favoriteTrails", favoriteTrails);
             return result;
         }else{
             throw new Exception("invalid credentials");

@@ -89,9 +89,9 @@ class App extends Component {
           'Content-Type': 'application/json'
         }
       });
-      console.log(loginResponse);
+      console.log(loginResponse, 'raw login response');
       const parsedLogin = await loginResponse.json();
-      console.log(parsedLogin);
+      console.log(parsedLogin, 'parsed login response');
       if (!loginResponse.ok) {
         this.setState({
           message: 'Incorrect Username or Password'
@@ -100,13 +100,20 @@ class App extends Component {
       }
       // const parsedLogin = await loginResponse.json();
       // console.log(parsedLogin);
+      const user = parsedLogin.user;
       if (parsedLogin) {
         console.log(parsedLogin, " parsed login");
         this.setState({
           logged: true,
           message: '', 
-          _id: parsedLogin.id,
-          ...parsedLogin
+          _id: user.id,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          password: user.password,
+          email: user.email,
+          localMountain: user.localMountain,
+          favoriteTrails: parsedLogin.favoriteTrails
         })
         this.props.history.push('/trails');
       } else {
