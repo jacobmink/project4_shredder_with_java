@@ -13,7 +13,6 @@ const Edit = (props) => {
                 <input type='text' name='firstName' onChange={props.handleChange} value={props.editUser.firstName} placeholder="firstName"/>
                 <input type='text' name='lastName' onChange={props.handleChange} value={props.editUser.lastName} placeholder="lastName"/>
                 <input type='text' name='localMountain' onChange={props.handleChange} value={props.editUser.localMountain} placeholder="localMountain"/>
-                <input type='text' name='favoriteTrails' onChange={props.handleChange} value={props.editUser.favoriteTrails} placeholder="favoriteTrails"/>
                 <input type='Submit' />
             </form>
             <button onClick={props.deleteUser}>Delete Profile</button>

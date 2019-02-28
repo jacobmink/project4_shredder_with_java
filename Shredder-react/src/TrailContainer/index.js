@@ -30,23 +30,7 @@ class TrailContainer extends Component {
         }
     }
 
-    addTrailToFavorites = async (trail_id)=>{
-        try{
-            const response = await fetch(process.env.REACT_APP_BACKEND + 'user/trail/' + trail_id, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            if(!response.ok){
-                throw Error(response.statusText);
-            }
-            const parsed = await response.json();
-        }catch(err){
-            return err;
-        }
-    }
+    
 
     render(){
         // list of resorts with links to their page?
@@ -56,7 +40,7 @@ class TrailContainer extends Component {
             <div>
                 <h1 className='title-heading'>Shredder</h1>
                    
-                <TrailList trails={this.state.trails} addTrailToFavorites={this.addTrailToFavorites}/>
+                <TrailList trails={this.state.trails} addTrailToFavorites={this.props.addTrailToFavorites}/>
             </div>
         )
     }

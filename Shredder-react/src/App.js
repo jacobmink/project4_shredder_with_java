@@ -129,7 +129,28 @@ class App extends Component {
     }
   }
 
- 
+  addTrailToFavorites = async (trail_id)=>{
+    try{
+        const response = await fetch(process.env.REACT_APP_BACKEND + 'user/trail/' + trail_id, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        if(!response.ok){
+            throw Error(response.statusText);
+        }
+        const parsed = await response.json();
+        console.log(parsed, ' parsed add trail response');
+        this.setState({
+          favoriteTrails: [...this.state.favoriteTrails, parsed]
+        })
+
+    }catch(err){
+        return err;
+    }
+  }
 
 
   render() {
@@ -138,7 +159,7 @@ class App extends Component {
         <Header />
         <Switch>
           <Route exact path='/' render={(props) => <Login state={this.state} showUserModal={this.showUserModal} showEditModal={this.showEditModal} handleChange={this.handleChange} handleUserUpdate={this.handleUserUpdate} deleteUser={this.deleteUser} handleLogin={this.handleLogin} />} />
-          <Route exact path='/trails' render={(props) => <TrailContainer username={this.state.username} favoriteTrails={this.state.favoriteTrails} state={this.state} /> } />
+          <Route exact path='/trails' render={(props) => <TrailContainer username={this.state.username} favoriteTrails={this.state.favoriteTrails} addTrailToFavorites={this.addTrailToFavorites} state={this.state} /> } />
         </Switch>
         
       </div>

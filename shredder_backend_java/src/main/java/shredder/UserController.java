@@ -107,24 +107,21 @@ public class UserController {
             Optional<User> foundUser = userRepository.findById(id);
             if(foundUser.isPresent()){
                 User userToEdit = foundUser.get();
-//                if(user.getUsername() != ""){
-//                    userToEdit.setUsername(user.getUsername());
-//                }
-//                if(user.getEmail() != ""){
-//                    userToEdit.setEmail(user.getEmail());
-//                }
-//                if(user.getFirstName() != "") {
-//                    userToEdit.setFirstName(user.getFirstName());
-//                }
-//                if(user.getLastName() != "") {
-//                    userToEdit.setLastName(user.getLastName());
-//                }
-//                if(user.getLocalMountain() != "") {
-//                    userToEdit.setLocalMountain(user.getLocalMountain());
-//                }
-//                if(user.getFavoriteTrails() != null) {
-//                    userToEdit.setFavoriteTrails(user.getFavoriteTrails());
-//                }
+                if(user.getUsername() != ""){
+                    userToEdit.setUsername(user.getUsername());
+                }
+                if(user.getEmail() != ""){
+                    userToEdit.setEmail(user.getEmail());
+                }
+                if(user.getFirstName() != "") {
+                    userToEdit.setFirstName(user.getFirstName());
+                }
+                if(user.getLastName() != "") {
+                    userToEdit.setLastName(user.getLastName());
+                }
+                if(user.getLocalMountain() != "") {
+                    userToEdit.setLocalMountain(user.getLocalMountain());
+                }
                 return userRepository.save(userToEdit);
             }else{
                 throw new Exception("Something went wrong!");
@@ -132,13 +129,13 @@ public class UserController {
     }
 
     @PostMapping("/user/trail/{trail_id}")
-    public String addTrailToFavorites(@PathVariable Long trail_id, HttpSession session) throws Exception{
+    public Trail addTrailToFavorites(@PathVariable Long trail_id, HttpSession session) throws Exception{
         try{
             User foundUser = userService.findUserByUsername(session.getAttribute("username").toString());
             Optional<Trail> foundTrail = trailRepository.findById(trail_id);
             foundUser.setFavoriteTrails(foundTrail.get());
             userRepository.save(foundUser);
-            return "Favorite trails updated";
+            return foundTrail.get();
         }catch(Exception err){
             throw new Exception(err.getMessage());
         }
